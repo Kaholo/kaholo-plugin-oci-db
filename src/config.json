@@ -1,0 +1,105 @@
+{
+    "name": "OCI-db",
+    "type": "executer",
+    "execProgram": "node",
+    "main": "app.js",
+    "exposeRoute": true,
+    "imgUrl": "logo.png",
+    "version": "1.0.0",
+    "description": "Integration with OCI Database Service",
+    "settings": [
+        {
+            "name":"privateKey",
+            "viewName":"Private key",
+            "type":"vault"
+        },
+        {
+            "name":"userId",
+            "viewName":"User Id",
+            "type":"string"
+        },
+        {
+            "name":"tenancyId",
+            "viewName":"Tenancy Id",
+            "type":"string"
+        },
+        {
+            "name":"fingerprint",
+            "viewName":"Fingerprint",
+            "type":"vault"
+        },
+        {
+            "name":"region",
+            "viewName":"Region",
+            "type":"string"
+        }
+    ],
+    "methods":[
+        {
+            "name":"createDatabase",
+            "viewName":"Create Database",
+            "params": [
+                {
+                    "name": "compartment",
+                    "viewName": "Compartment",
+                    "type": "autocomplete",
+                    "autocompleteType":"function",
+                    "functionName":"listCompartments"
+                },
+                {
+                    "name": "dbSystem",
+                    "viewName": "DB System",
+                    "type": "autocomplete",
+                    "autocompleteType":"function",
+                    "functionName":"listDbSystems"
+                },
+                {
+                    "name":"dbHome",
+                    "viewName": "DB Home",
+                    "type": "autocomplete",
+                    "autocompleteType": "function",
+                    "functionName": "listDbHomes"
+                },
+                {
+                    "name": "version",
+                    "viewName": "Database Version",
+                    "type": "autocomplete",
+                    "autocompleteType": "function",
+                    "functionName": "listDbVersions"
+                }
+            ]
+        },
+        {
+            "name":"createDbHome",
+            "viewName": "Create DB Home",
+            "params": [
+                {
+                    "name": "compartment",
+                    "viewName": "Compartment",
+                    "type": "autocomplete",
+                    "autocompleteType":"function",
+                    "functionName":"listCompartments"
+                },
+                {
+                    "name":"name",
+                    "viewName":"Display name",
+                    "type": "string"
+                },
+                {
+                    "name": "dbSystem",
+                    "viewName": "DB System",
+                    "type": "autocomplete",
+                    "autocompleteType":"function",
+                    "functionName":"listDbSystems"
+                },
+                {
+                    "name": "version",
+                    "viewName": "Database Version",
+                    "type": "autocomplete",
+                    "autocompleteType": "function",
+                    "functionName": "listDbVersions"
+                }
+            ]
+        }
+    ]
+}
