@@ -1,13 +1,14 @@
 const database = require("oci-database")
 const identity = require("oci-identity");
 const { getProvider, getDatabaseClient } = require('./helpers');
+const parsers = require("./parsers")
 
 // auto complete helper methods
 
 function mapAutoParams(autoParams){
   const params = {};
-  autoParams.foreach(param => {
-    params[param.id] = param.value.id ? param.value.id : param.value;
+  autoParams.forEach(param => {
+    params[param.name] = parsers.autocomplete(param.value);
   });
   return params;
 }
