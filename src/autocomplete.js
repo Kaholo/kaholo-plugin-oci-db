@@ -1,5 +1,6 @@
-const database = require("oci-database")
 const identity = require("oci-identity");
+const core = require("oci-core");
+const mySql = require("oci-mysql");
 const { getProvider, getDatabaseClient } = require('./helpers');
 const parsers = require("./parsers")
 
@@ -88,11 +89,78 @@ async function listDbVersions(query, pluginSettings, pluginActionParams) {
   });
   return handleResult(result, query, "version");
 }
- 
+
+async function listAvailabilityDomains(query, pluginSettings) {
+  /**
+   * This method will return all availability domains
+   */
+  const settings = mapAutoParams(pluginSettings);
+  const provider = getProvider(settings);
+  const identityClient = await new identity.IdentityClient({
+     authenticationDetailsProvider: provider
+  });
+
+  const request = { compartmentId: settings.tenancyId };
+  const result = await identityClient.listAvailabilityDomains(request);
+  return handleResult(result, query);
+}
+
+async function listSubnets(query, pluginSettings, pluginActionParams) {
+  /**
+   * This method returns all available subnets in the specified compartment
+   * Must have compartmentId before
+   */
+   const settings = mapAutoParams(pluginSettings), params = mapAutoParams(pluginActionParams);
+   const provider = getProvider(settings);
+   const networkClient = await new core.VirtualNetworkClient({
+      authenticationDetailsProvider: provider
+   });
+   const result = await networkClient.listSubnets({
+     compartmentId: params.compartment || settings.tenancyId
+   });
+   return handleResult(result, query);
+}
+
+async function listShapes(query, pluginSettings, pluginActionParams) {
+  /**
+   * This method returns all available shapes for mysql db system
+   * Must have compartmentId before
+   */
+   const settings = mapAutoParams(pluginSettings), params = mapAutoParams(pluginActionParams);
+   const provider = getProvider(settings);
+   const aasClient = await new mySql.MysqlaasClient({
+      authenticationDetailsProvider: provider
+   });
+   const result = await aasClient.listShapes({
+     availabilityDomain: params.availabilityDomain,
+     compartmentId: params.compartment || settings.tenancyId 
+   });
+   return handleResult(result, query);
+}
+
+async function listMysqlVersions(query, pluginSettings, pluginActionParams) {
+  /**
+   * This method returns all available mysql versions
+   * Must have compartmentId before
+   */
+   const settings = mapAutoParams(pluginSettings), params = mapAutoParams(pluginActionParams);
+   const provider = getProvider(settings);
+   const aasClient = await new mySql.MysqlaasClient({
+      authenticationDetailsProvider: provider
+   });
+   const result = await aasClient.listVersions({
+     compartmentId: params.compartment || settings.tenancyId
+   });
+   return handleResult(result, query);
+} 
 
 module.exports = {
   listCompartments,
   listDbHomes,
   listDbSystems,
-  listDbVersions
+  listDbVersions,
+  listAvailabilityDomains,
+  listSubnets,
+  listShapes,
+  listMysqlVersions
 }

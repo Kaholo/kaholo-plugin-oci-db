@@ -1,6 +1,7 @@
 const fs = require("fs");
 const common = require("oci-common");
-const database = require("oci-database")
+const database = require("oci-database");
+const mySql = require("oci-mysql");
 
 function createConfigFile(settings){
     const configPath = `${__dirname}/.oci`;
@@ -46,8 +47,19 @@ function getDatabaseClient(settings){
       authenticationDetailsProvider: provider
     });
 }
+
+/***
+ * @returns {mySql.DbSystemClient} OCI Database Client
+ ***/
+ function getDbSystemClient(settings){
+    const provider = getProvider(settings);
+    return new mySql.DbSystemClient({
+      authenticationDetailsProvider: provider
+    });
+}
   
 module.exports = {
     getProvider,
-    getDatabaseClient
+    getDatabaseClient,
+    getDbSystemClient
 }
