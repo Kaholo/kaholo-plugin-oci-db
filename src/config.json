@@ -36,42 +36,8 @@
     ],
     "methods":[
         {
-            "name":"createDatabase",
-            "viewName":"Create Database",
-            "params": [
-                {
-                    "name": "compartment",
-                    "viewName": "Compartment",
-                    "type": "autocomplete",
-                    "autocompleteType":"function",
-                    "functionName":"listCompartments"
-                },
-                {
-                    "name": "dbSystem",
-                    "viewName": "DB System",
-                    "type": "autocomplete",
-                    "autocompleteType":"function",
-                    "functionName":"listDbSystems"
-                },
-                {
-                    "name":"dbHome",
-                    "viewName": "DB Home",
-                    "type": "autocomplete",
-                    "autocompleteType": "function",
-                    "functionName": "listDbHomes"
-                },
-                {
-                    "name": "version",
-                    "viewName": "Database Version",
-                    "type": "autocomplete",
-                    "autocompleteType": "function",
-                    "functionName": "listDbVersions"
-                }
-            ]
-        },
-        {
-            "name":"createDbHome",
-            "viewName": "Create DB Home",
+            "name":"createAutonomousDatabase",
+            "viewName": "Create Autonomous Database",
             "params": [
                 {
                     "name": "compartment",
@@ -82,54 +48,95 @@
                 },
                 {
                     "name":"name",
-                    "viewName":"Display name",
+                    "viewName":"Display Name",
                     "type": "string"
                 },
                 {
-                    "name": "dbSystem",
-                    "viewName": "DB System",
+                    "name":"dbName",
+                    "viewName":"DB Name",
+                    "type": "string"
+                },
+                {
+                    "name":"workload",
+                    "viewName":"DB Workload Type",
+                    "type": "options",
+                    "options": [
+                        {
+                            "id": "AJD",
+                            "name": "AJD"
+                        },
+                        {
+                            "id": "APEX",
+                            "name": "APEX"
+                        },
+                        {
+                            "id": "DW",
+                            "name": "DW"
+                        },
+                        {
+                            "id": "OLTP",
+                            "name": "OLTP"
+                        }
+                    ]
+                },
+                {
+                    "name":"licenseModel",
+                    "viewName":"License Model",
+                    "type": "options",
+                    "options": [
+                        {
+                            "id": "LICENSE_INCLUDED",
+                            "name": "LICENSE_INCLUDED"
+                        },
+                        {
+                            "id": "BRING_YOUR_OWN_LICENSE",
+                            "name": "BRING_YOUR_OWN_LICENSE"
+                        }
+                    ]
+                },
+                {
+                    "name":"isDedicated",
+                    "viewName":"Is Dedicated",
+                    "type": "boolean"
+                },
+                {
+                    "name":"isDataGuardEnabled",
+                    "viewName":"Is Data Guard Enabled",
+                    "type": "boolean"
+                },
+                {
+                    "name":"dbContainerId",
+                    "viewName":"Autonomous DB Container",
                     "type": "autocomplete",
                     "autocompleteType":"function",
-                    "functionName":"listDbSystems"
+                    "functionName":"listAutoDbContainer"
+                },
+                {
+                    "name":"isFreeTier",
+                    "viewName":"Is Free Tier",
+                    "type": "boolean"
                 },
                 {
                     "name": "version",
-                    "viewName": "Database Version",
+                    "viewName": "DB Version",
                     "type": "autocomplete",
                     "autocompleteType": "function",
-                    "functionName": "listDbVersions"
-                }
-            ]
-        },
-        {
-            "name":"createMySqlDatabaseSystem",
-            "viewName": "Create MySQL DB System",
-            "params": [
-                {
-                    "name": "compartment",
-                    "viewName": "Compartment",
-                    "type": "autocomplete",
-                    "autocompleteType":"function",
-                    "functionName":"listCompartments"
+                    "functionName": "listAutoDbVersions"
                 },
                 {
-                    "name":"name",
-                    "viewName":"Display name",
+                    "name":"cpuCount",
+                    "viewName":"CPU Core Count",
                     "type": "string"
                 },
                 {
-                    "name":"availabilityDomain",
-                    "viewName":"Availability Domain",
-                    "type": "autocomplete",
-                    "autocompleteType":"function",
-                    "functionName":"listAvailabilityDomains"
+                    "name":"storageSize",
+                    "viewName":"Storage Size In TBs",
+                    "type": "string"
                 },
                 {
-                    "name": "subnet",
-                    "viewName": "Subnet",
-                    "type": "autocomplete",
-                    "autocompleteType":"function",
-                    "functionName":"listSubnets"
+                    "name":"isAutoScalingEnabled",
+                    "viewName":"Auto Scaling Enabled",
+                    "type": "boolean"
                 },
                 {
                     "name":"adminUsername",
@@ -142,50 +149,23 @@
                     "type": "vault"
                 },
                 {
-                    "name": "shape",
-                    "viewName": "Shape",
+                    "name": "vcn",
+                    "viewName": "VCN",
                     "type": "autocomplete",
                     "autocompleteType":"function",
-                    "functionName":"listShapes"
+                    "functionName":"listVCN"
                 },
                 {
-                    "name": "mysqlVersion",
-                    "viewName": "MySQL Version",
+                    "name": "subnet",
+                    "viewName": "Subnet",
                     "type": "autocomplete",
-                    "autocompleteType": "function",
-                    "functionName": "listMysqlVersions"
+                    "autocompleteType":"function",
+                    "functionName":"listSubnets"
                 },
                 {
-                    "name":"description",
-                    "viewName":"Description",
-                    "type": "string"
-                },
-                {
-                    "name":"isHighlyAvailable",
-                    "viewName":"Is Highly Available",
+                    "name":"waitFor",
+                    "viewName":"Wait for Creation",
                     "type": "boolean"
-                },
-                {
-                    "name":"port",
-                    "viewName":"Port",
-                    "type": "string"
-                },
-                {
-                    "name":"createDefaultDbHome",
-                    "viewName":"Create Default DB Home",
-                    "type": "boolean"
-                },
-                {
-                    "name":"createDefaultDatabase",
-                    "viewName":"Create Default Database",
-                    "type": "boolean"
-                },
-                {
-                    "name": "version",
-                    "viewName": "DB Version",
-                    "type": "autocomplete",
-                    "autocompleteType": "function",
-                    "functionName": "listDbVersions"
                 }
             ]
         }

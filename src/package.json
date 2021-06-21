@@ -10,7 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "oci-core": "^1.20.2",
-    "oci-mysql": "^1.20.2",
+    "oci-workrequests": "^1.20.2",
     "oci-database": "^1.20.2",
     "oci-identity": "^1.20.2",
     "oci-common": "^1.20.2"

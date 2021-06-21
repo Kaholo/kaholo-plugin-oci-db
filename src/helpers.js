@@ -1,7 +1,7 @@
 const fs = require("fs");
 const common = require("oci-common");
 const database = require("oci-database");
-const mySql = require("oci-mysql");
+const wr = require("oci-workrequests");
 
 function createConfigFile(settings){
     const configPath = `${__dirname}/.oci`;
@@ -49,17 +49,19 @@ function getDatabaseClient(settings){
 }
 
 /***
- * @returns {mySql.DbSystemClient} OCI Database Client
+ * @returns {database.DatabaseWaiter} OCI Database Client
  ***/
- function getDbSystemClient(settings){
+ function getDbWaiter(settings){
     const provider = getProvider(settings);
-    return new mySql.DbSystemClient({
+    const dbClient = getDatabaseClient(settings);
+    const wrClient =  new wr.WorkRequestClient({
       authenticationDetailsProvider: provider
     });
+    return dbClient.createWaiters(wrClient);
 }
   
 module.exports = {
     getProvider,
     getDatabaseClient,
-    getDbSystemClient
+    getDbWaiter
 }

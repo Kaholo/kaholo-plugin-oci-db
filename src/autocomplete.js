@@ -15,7 +15,7 @@ function mapAutoParams(autoParams){
 }
 
 function handleResult(result, query, key){
-  let items = result.items;
+  let items = result.items || result;
   if (items.length === 0) throw result;
   items = items.map(item => ({
     id: key ? item[key] : item.id, 
@@ -42,67 +42,50 @@ async function listCompartments(query, pluginSettings) {
   return handleResult(result, query);
 }
 
-async function listDbHomes(query, pluginSettings, pluginActionParams) {
-  /**
-   * This method returns all available db homes
-   * Must have compartmentId before
-   */
-  const settings = mapAutoParams(pluginSettings), params = mapAutoParams(pluginActionParams);
-  const dbClient = getDatabaseClient(settings);
-  
-  const result = await dbClient.listDbHomes({
-    compartmentId: params.compartment || settings.tenancyId,
-    dbSystemId: params.dbSystem
-  });
-  return handleResult(result, query);
-}
-
-async function listDbSystems(query, pluginSettings, pluginActionParams) {
-  /**
-   * This method returns all available db systems
-   * Must have compartmentId before
-   */
-  const settings = mapAutoParams(pluginSettings), params = mapAutoParams(pluginActionParams);
-  const compartmentId = params.compartment || settings.tenancyId;
-  const dbClient = getDatabaseClient(settings);
-  
-  const result = await dbClient.listDbSystems({compartmentId});
-  return handleResult(result, query);
-}
-
-async function listDbVersions(query, pluginSettings, pluginActionParams) {
+async function listAutoDbVersions(query, pluginSettings) {
   /**
    * This method returns all available db versions
    * Must have compartmentId before
    */
-  const settings = mapAutoParams(pluginSettings), params = mapAutoParams(pluginActionParams);
+  const settings = mapAutoParams(pluginSettings);
   const dbClient = getDatabaseClient(settings);
   
-  if (params.dbHome && !params.dbSystem){
-    const dbHomeRes = await dbClient.getDbHome({dbHomeId: params.dbHome});
-    params.dbSystem = dbHomeRes.dbHome.dbSystemId;
-  }
   
-  const result = await dbClient.listDbVersions({
+  const result = await dbClient.listAutonomousDbVersions({
     compartmentId: params.compartment || settings.tenancyId,
-    dbSystemId: params.dbSystem
   });
   return handleResult(result, query, "version");
 }
 
-async function listAvailabilityDomains(query, pluginSettings) {
+async function listAutoDbContainer(query, pluginSettings) {
   /**
-   * This method will return all availability domains
+   * This method returns all available db versions
+   * Must have compartmentId before
    */
   const settings = mapAutoParams(pluginSettings);
-  const provider = getProvider(settings);
-  const identityClient = await new identity.IdentityClient({
-     authenticationDetailsProvider: provider
+  const dbClient = getDatabaseClient(settings);
+  
+  
+  const result = await dbClient.listAutonomousContainerDatabases({
+    compartmentId: params.compartment || settings.tenancyId,
   });
-
-  const request = { compartmentId: settings.tenancyId };
-  const result = await identityClient.listAvailabilityDomains(request);
   return handleResult(result, query);
+}
+
+async function listVCN(query, pluginSettings, pluginActionParams) {
+  /**
+   * This method returns all available subnets in the specified compartment
+   * Must have compartmentId before
+   */
+   const settings = mapAutoParams(pluginSettings), params = mapAutoParams(pluginActionParams);
+   const provider = getProvider(settings);
+   const networkClient = await new core.VirtualNetworkClient({
+      authenticationDetailsProvider: provider
+   });
+   const result = await networkClient.listVcns({
+     compartmentId: params.compartment || settings.tenancyId
+   });
+   return handleResult(result, query);
 }
 
 async function listSubnets(query, pluginSettings, pluginActionParams) {
@@ -116,51 +99,16 @@ async function listSubnets(query, pluginSettings, pluginActionParams) {
       authenticationDetailsProvider: provider
    });
    const result = await networkClient.listSubnets({
-     compartmentId: params.compartment || settings.tenancyId
+     compartmentId: params.compartment || settings.tenancyId,
+     vcnId: params.vcn
    });
    return handleResult(result, query);
 }
-
-async function listShapes(query, pluginSettings, pluginActionParams) {
-  /**
-   * This method returns all available shapes for mysql db system
-   * Must have compartmentId before
-   */
-   const settings = mapAutoParams(pluginSettings), params = mapAutoParams(pluginActionParams);
-   const provider = getProvider(settings);
-   const aasClient = await new mySql.MysqlaasClient({
-      authenticationDetailsProvider: provider
-   });
-   const result = await aasClient.listShapes({
-     availabilityDomain: params.availabilityDomain,
-     compartmentId: params.compartment || settings.tenancyId 
-   });
-   return handleResult(result, query);
-}
-
-async function listMysqlVersions(query, pluginSettings, pluginActionParams) {
-  /**
-   * This method returns all available mysql versions
-   * Must have compartmentId before
-   */
-   const settings = mapAutoParams(pluginSettings), params = mapAutoParams(pluginActionParams);
-   const provider = getProvider(settings);
-   const aasClient = await new mySql.MysqlaasClient({
-      authenticationDetailsProvider: provider
-   });
-   const result = await aasClient.listVersions({
-     compartmentId: params.compartment || settings.tenancyId
-   });
-   return handleResult(result, query);
-} 
 
 module.exports = {
   listCompartments,
-  listDbHomes,
-  listDbSystems,
-  listDbVersions,
-  listAvailabilityDomains,
+  listAutoDbVersions,
+  listAutoDbContainer,
+  listVCN,
   listSubnets,
-  listShapes,
-  listMysqlVersions
 }

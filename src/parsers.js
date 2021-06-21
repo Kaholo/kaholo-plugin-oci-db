@@ -17,7 +17,7 @@ module.exports = {
     },
     number: (value)=>{
         if (!value) return undefined;
-        const parsed = parseInt(value);
+        const parsed = Number(value);
         if (parsed === NaN) {
             throw `Value ${value} is not a valid number`
         }
