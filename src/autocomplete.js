@@ -1,6 +1,5 @@
 const identity = require("oci-identity");
 const core = require("oci-core");
-const mySql = require("oci-mysql");
 const { getProvider, getDatabaseClient } = require('./helpers');
 const parsers = require("./parsers")
 
@@ -39,15 +38,17 @@ async function listCompartments(query, pluginSettings) {
     authenticationDetailsProvider: provider
   });
   const result = await identityClient.listCompartments({compartmentId});
-  return handleResult(result, query);
+  const compartments = handleResult(result, query);
+  compartments.push({id: tenancyId, value: "Tenancy"});
+  return compartments;
 }
 
-async function listAutoDbVersions(query, pluginSettings) {
+async function listAutoDbVersions(query, pluginSettings, pluginActionParams) {
   /**
    * This method returns all available db versions
    * Must have compartmentId before
    */
-  const settings = mapAutoParams(pluginSettings);
+  const settings = mapAutoParams(pluginSettings), params = mapAutoParams(pluginActionParams);
   const dbClient = getDatabaseClient(settings);
   
   
@@ -57,12 +58,12 @@ async function listAutoDbVersions(query, pluginSettings) {
   return handleResult(result, query, "version");
 }
 
-async function listAutoDbContainer(query, pluginSettings) {
+async function listAutoDbContainer(query, pluginSettings, pluginActionParams) {
   /**
    * This method returns all available db versions
    * Must have compartmentId before
    */
-  const settings = mapAutoParams(pluginSettings);
+  const settings = mapAutoParams(pluginSettings), params = mapAutoParams(pluginActionParams);
   const dbClient = getDatabaseClient(settings);
   
   

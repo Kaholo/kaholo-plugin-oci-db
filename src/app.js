@@ -4,7 +4,7 @@ const {AutonomousDatabase} = require("oci-database").models;
 
 async function createAutonomousDatabase(action, settings){
   const dbClient = getDatabaseClient(settings);
-  const result = await dbClient.createAutonomousDatabase({ createAutonomousDatabaseDetails: {
+  let result = await dbClient.createAutonomousDatabase({ createAutonomousDatabaseDetails: {
     compartmentId: parsers.autocomplete(action.params.compartment || settings.tenancyId),
     cpuCoreCount: parsers.number(action.params.cpuCount),
     dbName: parsers.string(action.params.dbName),

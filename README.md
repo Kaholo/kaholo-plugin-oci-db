@@ -1,50 +1,36 @@
-# kaholo-plugin-oci-instances
-Thi plugin integrate with Oracle Cloud to create instances
+# kaholo-plugin-oci-db
+Kaholo plugin for integration with Oracle Cloud Infrastracture(OCI) DB Services.
 
 ## Settings
-1. Compartment ID (vault)
-2. Private Key (vault). From Identity\Users\YOUR_USER\API keys. This value contains all the text from -----BEGIN PRIVATE KEY----- ...... -----END PRIVATE KEY-----
-3. User ID (vault): User ocid. From Identity\Users\YOUR_USER.
-4. Tenancy ID (vault) Tenancy ocid, from user profile.
-5. Fingerprint (vault): From Identity\Users\YOUR_USER\API keys
-6. Region (vault): Region identifier
+1. Private Key (Vault) **Required** - Will be used to authenticate to the OCI API. Can be taken from Identity\Users\YOUR_USER\API keys.
+2. User ID (String) **Required** - The OCID of the user to authenticate with.
+3. Tenancy ID (String) **Required** - Tenancy OCID. Can be found in user profile.
+4. Fingerprint (Vault) **Required** -  Will be used to authenticate to the OCI API. Can be taken from Identity\Users\YOUR_USER\API keys.
+5. Region (String) **Required** - Identifier of the region to create the requests in. 
 
-## Method Launch instance
-This method will invoke a new instance.
-
-### Parameters
-1. Compartment Id: (including Tenanty Id which is the root compartment).
-2. Display name: The name of the new instance
-3. Availability Domains: from a list of all available domains
-4. Shape: From a list of all shapes
-5. Image: from a list of images
-6. Subnet: from a list of subnets
-
-## Method: create VCN
-This method will create a new VCN
+## Method: Create Autonomous Database
+Creates a new autonomous database. To read more on autonomous databases click [here](https://docs.oracle.com/en-us/iaas/Content/Database/Concepts/adboverview.htm).
 
 ### Parameters
-1. VCN name
-2. Compartment Id: (including Tenanty Id which is the root compartment).
-3. CIDR Block
-
-## Method: create Subnet
-This method will create a subnet inside a VCN.
-
-### Parameters
-1. Subnet name
-2. Compartment Id: (including Tenanty Id which is the root compartment).
-3. CIDR Block
-4. VCN
-
-## Method: Delete VCN
-This method will delete a VCN
-
-### Parameter
-1. VCN Name
-
-## Method: Delete subnet
-This method will delete a subnet
-
-### Parameter
-1. Subnet name
+1. Compartment (Autocomplete) **Optional** - The compartment to create the DB in.
+2. Display name (String) **Optional** - The display name for the new DB.
+3. DB name (String) **Required** - The name of the new DB. Can't use nothing but alphanumeric chars.
+4. DB Workload Type (Options) **Required** - The type of worload the new db will handle. Possible Values are: 
+* "AJD" - Autonomous JSON Database
+* "APEX" - Oracle APEX Application Development
+* "DW" - Autonomous Data Warehouse
+* "OLTP" - Autonomous Transaction Processing
+5. License Model (Options) **Optional** - Determines what to do about the DB license. Possible Values are LICENSE_INCLUDED/BRING_YOUR_OWN_LICENSE. Default value is LICENSE_INCLUDED.
+6. Is Dedicated (Boolean) **Optional** - Determines if the infrastracture will be **Dedicated**  Exadata or Shared Exadata. Default is False.
+7. Is Data Guard Enabled (Boolean) **Optional** - If true, enable Data Guard on the new DB. Default is False.
+8. Autonomous DB Container (Autocomplete) **Required for Dedicated** - Only for Dedicated DBs. The DB Container to run the new DB on. 
+9. Is Free Tier (Boolean) **Optional** - Should stay always in the free limits of the service. Default Value is False.
+10. DB Version (AutoComplete) **Optional** - The version of the new autonomous db. If not specified OCI will chose version.
+11. CPU Core Count (Integer) **Required** - the number of cpu cores to use with the db.
+12. Storage Size In TBs (Integer) **Required** - The size of storage to allocate for the new DB.
+13. Auto Scaling Enabled (Boolean) **Optional** - Whether to enable auto scaling of the db cores and storage size. Default value is false.
+14. Admin Username (String) **Required** - The username for the admin user in the new DB.
+15. Admin Password (Vault) **Required** - The password of the admin user in the new DB.
+16. VCN (AutoComplete) **Optional** - If specified, filter subnets in the next argumant to only be from the specified VCN.
+17. Subnet (AutoComplete) **Optional** - If specified, host the new db on the specified subnet.
+18. Wait For Creation (Boolean) **Optional** - Whether should wait for the DB to finish creating before returning from this method. Default Value is False.
