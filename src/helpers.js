@@ -1,4 +1,5 @@
 const common = require("oci-common");
+const mysql = require("oci-mysql");
 const database = require("oci-database");
 const wr = require("oci-workrequests");
 
@@ -35,8 +36,19 @@ function getDatabaseClient(settings){
     return dbClient.createWaiters(wrClient);
 }
   
+/***
+ * @returns {mysql.DbSystemClient} OCI MySQL DB System Client
+ ***/
+function getMySqlSysClient(settings){
+    const provider = getProvider(settings);
+    return new mysql.DbSystemClient({
+      authenticationDetailsProvider: provider
+    });
+}
+
 module.exports = {
     getProvider,
     getDatabaseClient,
-    getDbWaiter
+    getDbWaiter,
+    getMySqlSysClient
 }
