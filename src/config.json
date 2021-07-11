@@ -5,7 +5,7 @@
     "main": "app.js",
     "exposeRoute": true,
     "imgUrl": "logo.png",
-    "version": "1.0.0",
+    "version": "1.1.0",
     "description": "Integration with OCI Database Service",
     "settings": [
         {
@@ -165,6 +165,94 @@
                 {
                     "name":"waitFor",
                     "viewName":"Wait for Creation",
+                    "type": "boolean"
+                }
+            ]
+        },
+        {
+            "name":"createMySqlDatabaseSystem",
+            "viewName": "Create MySQL DB System",
+            "params": [
+                {
+                    "name": "compartment",
+                    "viewName": "Compartment",
+                    "type": "autocomplete",
+                    "autocompleteType":"function",
+                    "functionName":"listCompartments"
+                },
+                {
+                    "name":"name",
+                    "viewName":"Display name",
+                    "type": "string"
+                },
+                {
+                    "name":"availabilityDomain",
+                    "viewName":"Availability Domain",
+                    "type": "autocomplete",
+                    "autocompleteType":"function",
+                    "functionName":"listAvailabilityDomains"
+                },
+                {
+                    "name": "vcn",
+                    "viewName": "VCN",
+                    "type": "autocomplete",
+                    "autocompleteType":"function",
+                    "functionName":"listVCN"
+                },
+                {
+                    "name": "subnet",
+                    "viewName": "Subnet",
+                    "type": "autocomplete",
+                    "autocompleteType":"function",
+                    "functionName":"listSubnets"
+                },
+                {
+                    "name":"adminUsername",
+                    "viewName":"Admin Username",
+                    "type": "string"
+                },
+                {
+                    "name":"adminPassword",
+                    "viewName":"Admin Password",
+                    "type": "vault"
+                },
+                {
+                    "name": "shape",
+                    "viewName": "Shape",
+                    "type": "autocomplete",
+                    "autocompleteType":"function",
+                    "functionName":"listShapes"
+                },
+                {
+                    "name": "mysqlVersion",
+                    "viewName": "MySQL Version",
+                    "type": "autocomplete",
+                    "autocompleteType": "function",
+                    "functionName": "listMysqlVersions"
+                },
+                {
+                    "name":"description",
+                    "viewName":"Description",
+                    "type": "string"
+                },
+                {
+                    "name":"isHighlyAvailable",
+                    "viewName":"Is Highly Available",
+                    "type": "boolean"
+                },
+                {
+                    "name":"port",
+                    "viewName":"Port",
+                    "type": "string"
+                },
+                {
+                    "name":"storageSize",
+                    "viewName":"Storage Size in GB",
+                    "type": "string"
+                },
+                {
+                    "name": "waitFor",
+                    "viewName": "Wait For Creation",
                     "type": "boolean"
                 }
             ]
