@@ -34,3 +34,22 @@ Creates a new autonomous database. To read more on autonomous databases click [h
 16. VCN (AutoComplete) **Optional** - If specified, filter subnets in the next argumant to only be from the specified VCN.
 17. Subnet (AutoComplete) **Optional** - If specified, host the new db on the specified subnet.
 18. Wait For Creation (Boolean) **Optional** - Whether should wait for the DB to finish creating before returning from this method. Default Value is False.
+
+## Method: Create MySQL DB System
+Creates a new MySQL DB System
+
+### Parameters
+1. Compartment (Autocomplete) **Required** - The compartment to create the DB System in.
+2. Display Name (String) **Required** - The display name for the new DB System.
+3. Availability Domain (Autocomplete) **Required** - The availability domain on which to deploy the Read/Write endpoint. This defines the preferred primary instance.
+4. VCN (Autocomplete) **Required** - The VCN of the subnet to store the DB system in.
+5. Subnet (Autocomplete) **Required** - The subnet to store the DB system in.
+6. Admin Username (String) **Required** - The username for the admin user in the new DB system.
+7. Admin Password (Vault) **Required** - The password of the admin user in the new DB system.
+8. Shape (Autocomplete) **Required** - The compute shape of the new DB system.
+9. MySQL Version (Autocomplete) **Required** - The version of MySQL to use.
+10. Description (Text) **Optional** - Description of the DB system.
+11. Is Highly Available (Boolean) **Optional** - Specifies if the DB System is highly available. Default value is false.
+12. Port (Integer) **Optional** - The port for primary endpoint of the DB System to listen on.
+12. Storage Size In GBs (Integer) **Required** - The size of storage to allocate for the new DB System.
+18. Wait For Creation (Boolean) **Optional** - Whether should wait for the DB System to finish creating before returning from this method. Default Value is False.

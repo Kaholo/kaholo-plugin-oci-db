@@ -182,7 +182,7 @@
                 },
                 {
                     "name":"name",
-                    "viewName":"Display name",
+                    "viewName":"Display Name",
                     "type": "string"
                 },
                 {
